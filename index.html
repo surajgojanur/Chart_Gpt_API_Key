@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPT Question Answering</title>
+</head>
+<body>
+    <h1>Ask a Question:</h1>
+    <input type="text" id="question" placeholder="Enter your question">
+    <button onclick="getAnswer()">Get Answer</button>
+    <p>Answer:</p>
+    <div id="answer"></div>
+
+    <script>
+        function getAnswer() {
+            const question = document.getElementById('question').value;
+            const apiKey = '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';
+
+            fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    prompt: `Answer the following question: ${question}`,
+                    max_tokens: 50, // You can adjust this to limit the response length.
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const answer = data.choices[0].text;
+                document.getElementById('answer').textContent = answer;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
